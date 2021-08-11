@@ -20,7 +20,7 @@ function Dashboard({ date }) {
    }
 
   const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+  const [reservationsError, setReservationsError] = useState([]);
 
 
   // Format the date
@@ -32,7 +32,6 @@ function Dashboard({ date }) {
 
   function loadDashboard() {
     const abortController = new AbortController();
-    setReservationsError(null);
 
     listReservations({ date }, abortController.signal)
       .then(setReservations)
@@ -56,9 +55,9 @@ function Dashboard({ date }) {
 
   return (
     <main>
-            <div className="headingBar d-md-flex my-3 p-2">
-      <h1>Dashboard</h1>
-      </div>
+      <div className="headingBar d-md-flex my-3 p-2">
+        <h1>Dashboard</h1>
+      
         <h4 className="mb-0">Reservations for: { dateString }</h4>
           <Link to={`/dashboard?date=${previous(date)}`}>
           <button
@@ -77,30 +76,30 @@ function Dashboard({ date }) {
           </Link>
           <Link to={`/dashboard?date=${next(date)}`}>
           <button
-          type="button"
-          className="btn btn-secondary m-2"
->
+            type="button"
+            className="btn btn-secondary m-2"
+          >
               Next&nbsp;
               <span className="oi oi-arrow-thick-right" />
           </button>
           </Link>
 
-        <table className = "table">
+          <table className = "table">
           <thead>
-          <tr>
-            <th scope = "col">First name:</th>
-            <th scope = "col">Last name:</th>
-            <th scope = "col">Mobile number:</th>
-            <th scopt = "col">Reservation date:</th>
-            <th scope = "col">Time of reservation:</th>
-            <th scope = "col">Number of people:</th>
-          </tr>
+            <tr>
+              <th scope = "col">First name:</th>
+              <th scope = "col">Last name:</th>
+              <th scope = "col">Mobile number:</th>
+              <th scopt = "col">Reservation date:</th>
+              <th scope = "col">Time of reservation:</th>
+              <th scope = "col">Number of people:</th>
+            </tr>
           </thead>
-        <tbody>
-        {tableRows}
-        </tbody>
-        </table>
-        
+          <tbody>
+            {tableRows}
+          </tbody>
+          </table>
+        </div>
     </main>
   );
 }

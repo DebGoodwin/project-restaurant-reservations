@@ -6,22 +6,21 @@ const hasValidProperties = require("../errors/hasValidProperties");
 const REQUIRED_PROPERTIES = [
   "first_name",
   "last_name",
+  "people",
   "mobile_number",
   "reservation_date",
   "reservation_time",
-  "people",
+  
 ]
 
 const VALID_PROPERTIES = [
   "first_name",
   "last_name",
+  "people",
   "mobile_number",
   "reservation_date",
   "reservation_time",
-  "people",
 ]
-
-
 
 /**
  * Middleware validation functions
@@ -31,6 +30,7 @@ const VALID_PROPERTIES = [
 function dateIsValid (req, res, next) {
   const { reservation_date } = req.body.data;
   const date = Date.parse(reservation_date);
+
   if (date && date > 0) {
     return next();
   } else {
@@ -42,7 +42,7 @@ function dateIsValid (req, res, next) {
 }
 
 function timeIsValid (req, res, next) {
-  const { reservation_time } = req.body.data;
+  const { reservation_time } = req.body.data ;
   const regex = new RegExp("([01]?[0-9]|2[0-3]):[0-5][0-9]");
 
   if (regex.test(reservation_time)) {
@@ -56,14 +56,71 @@ function timeIsValid (req, res, next) {
 
 function peopleIsValidNumber (req, res, next) {
   const { people } = req.body.data;
-  const num = parseInt(people);
-  //const isInt = Number.isInteger(num);
-  if(num) {
+  const valid = Number.isInteger(people);
+ 
+  if(valid && people > 0) {
     return next();
   }
   next ({
     status: 400,
     message: `people is not a valid number ${people}.`,
+  })
+}
+
+function notTuesday(req, res, next) {
+  const { reservation_date } = req.body.data;
+  const date = new Date(reservation_date);
+  const day = date.getUTCDay();
+
+  if(day !== 2) {
+    return next()
+  }
+  next ({
+      status: 400,
+      message: "The restaurant is closed on Tuesday.",
+  });
+}
+
+function notPastDate(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+
+  const currDate = Date.now();
+  const reservationDate = new Date(`${reservation_date} ${reservation_time}`);
+  const newResDate = reservationDate.valueOf();
+  console.log("Reservation Date***",reservationDate)
+  
+
+  if(isNaN(Date.parse(reservation_date))) {
+    return next ({
+      status: 400,
+      message: "reservation_date is invalid",
+    })
+  }
+  if(newResDate < currDate) {
+    return next ({
+      status: 400,
+      message: "New reservations must be in the future.",
+    })
+  }
+  next();
+}
+
+
+
+function duringOperationHours(req, res, next) {
+  const { reservation_date, reservation_time } = req.body.data;
+  const reservationDate = new Date(`${reservation_date} ${reservation_time}`);
+
+  const hours = reservationDate.getHours();
+  const mins = reservationDate.getMinutes();
+  
+  const compareTime = hours * 100 + mins; 
+  if(compareTime >= 1030 && compareTime <= 2130) {
+    return next();
+  }
+  next ({
+    status: 400,
+    message: "Reservations must be between 10:30 AM and 9:30 PM.",
   })
 }
 
@@ -90,5 +147,10 @@ async function create(req, res) {
 
 module.exports = {
   list,
-  create:  asyncErrorBoundary(create),
+  create:  [hasProperties(...REQUIRED_PROPERTIES), 
+            hasValidProperties(...VALID_PROPERTIES), 
+            dateIsValid, 
+            timeIsValid, 
+            peopleIsValidNumber,
+            asyncErrorBoundary(create)],
 };
