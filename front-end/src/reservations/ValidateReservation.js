@@ -27,7 +27,7 @@ function ValidateReservation(reservation) {
     const mins = newReservationDate.getMinutes();
     const compareTime = hours * 100 + mins;
 
-    if (compareTime < 1030 || compareTime > 2130) {
+    if (compareTime < 1030 || compareTime >= 2130) {
         errors.push(new Error("Reservations must be between 10:30 AM and 9:30 PM."));
 
     }

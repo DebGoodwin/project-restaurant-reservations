@@ -115,7 +115,7 @@ function duringOperationHours(req, res, next) {
   const mins = reservationDate.getMinutes();
   
   const compareTime = hours * 100 + mins; 
-  if(compareTime >= 1030 && compareTime <= 2130) {
+  if(compareTime >= 1030 && compareTime < 2130) {
     return next();
   }
   next ({
