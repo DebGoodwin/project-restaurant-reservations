@@ -20,7 +20,7 @@ function ReservationCreate() {
     });
 
     
-    const submitHandle = (event) => {
+    const submitHandler = (event) => {
         event.preventDefault();
 
         const errors = ValidateReservation(reservation);
