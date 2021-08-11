@@ -154,5 +154,6 @@ module.exports = {
             peopleIsValidNumber,
             notTuesday,
             notPastDate,
+            duringOperationHours,
             asyncErrorBoundary(create)],
 };
