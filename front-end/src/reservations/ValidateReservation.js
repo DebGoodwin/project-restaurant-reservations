@@ -18,7 +18,7 @@ function ValidateReservation(reservation) {
     const compareDate = newReservationDate.valueOf();
 
     if (today > compareDate) {
-        errors.push(new Error("Reservation cannot be a date in the past."));
+        errors.push(new Error("Reservation date must be in the future."));
     }
 
 

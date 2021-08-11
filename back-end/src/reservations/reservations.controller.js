@@ -152,5 +152,7 @@ module.exports = {
             dateIsValid, 
             timeIsValid, 
             peopleIsValidNumber,
+            notTuesday,
+            notPastDate,
             asyncErrorBoundary(create)],
 };
