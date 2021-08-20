@@ -56,7 +56,6 @@ function ReservationCreate() {
 
   return (
     <div>
-        <h1 className="mb-3">Create Reservation</h1>
         <ErrorAlert errors={reservationErrors} />
         <ReservationForm
             reservation={reservation}

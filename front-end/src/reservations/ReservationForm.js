@@ -6,9 +6,12 @@ function ReservationForm(props) {
     const history = useHistory();
 
     return (
-        <form onSubmit={submitHandler} className="mb-4">
-        <div className="row mb-3">
-           <div className="col-6 form-group">
+    <div className="card my-3 border-secondary">
+        <h3 className="card-header text-white bg-secondary">Create Reservation</h3>
+        <div class="card-body"></div>
+        <form onSubmit={submitHandler}>
+     
+           <div className="col-10 form-group">
                 <label className="form-label" htmlFor="first_name">First name: </label>
                 <input  
                     className="form-control"
@@ -28,7 +31,7 @@ function ReservationForm(props) {
                     value={reservation.last_name}
                     onChange={changeHandler}
                     required={true}
-                />
+                /><br/>
                 <label className="form-label" htmlFor="mobile_number">Mobile number: </label>
                 <input  
                     className="form-control"
@@ -39,7 +42,7 @@ function ReservationForm(props) {
                     onChange={changeHandler}
                     required={true}
                     placeholder="(xxx) xxx-xxxx"
-                />
+                /><br/>
                 <label className="form-label" htmlFor="reservation_date">Reservation date: </label>
                 <input  
                     className="form-control"
@@ -63,7 +66,7 @@ function ReservationForm(props) {
                     value={reservation.reservation_time}
                     onChange={changeHandler}
                     required={true}
-                />
+                /><br/>
                 <label className="form-label" htmlFor="people">Number of people: </label>
                 <input  
                     className="form-control"
@@ -74,14 +77,16 @@ function ReservationForm(props) {
                     value={reservation.people}
                     onChange={changeHandler}
                     required={true}
-                />
+                /><br/>
               <div>
                     <button type="button" className="btn btn-secondary m-2" onClick={()=> history.push("/")}> Cancel </button>
                     <button type="submit" className="btn btn-primary m-2"> Submit </button>
               </div>
             </div>
-        </div>
+            
         </form>
+</div>
+        
     );
 }
 

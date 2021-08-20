@@ -124,8 +124,22 @@ function duringOperationHours(req, res, next) {
   })
 }
 
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+
+  if(reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  return next ({
+    status: 404,
+    message: "Reservation cannot be found."
+  });
+}
+
 /**
- * List handler for reservation resources
+ * List handler for reservations
  */
 async function list(req, res) {
   const { date } = req.query;
@@ -145,6 +159,11 @@ async function create(req, res) {
   res.status(201).json({ data: newReservation });
 }
 
+async function read(req, res) {
+  const reservation = res.locals.reservation;
+  res.json({ data: reservation })
+}
+
 module.exports = {
   list,
   create:  [hasProperties(...REQUIRED_PROPERTIES), 
@@ -156,4 +175,6 @@ module.exports = {
             notPastDate,
             duringOperationHours,
             asyncErrorBoundary(create)],
+  read:    [reservationExists,
+            asyncErrorBoundary(read)],
 };
