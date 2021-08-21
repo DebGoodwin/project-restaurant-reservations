@@ -8,7 +8,7 @@ function NewTable() {
     const history = useHistory();
     const [table, setTable] = useState({
         table_name:"",
-        capacity: 1,
+        capacity:"",
     })
     const [tableErrors, setTableErrors] = useState([]);
 
@@ -50,7 +50,7 @@ function NewTable() {
             <ErrorAlert errors={tableErrors} />
             <div className="card my-3 border-secondary">
                 <h3 className="card-header text-white bg-secondary">New Table</h3>
-                <div class="card-body">
+                <div className="card-body">
                     <form onSubmit={submitHandler}>
                         <div className="form-group">
                         <label className="form-label" htmlFor="table_name">Table Name:</label>

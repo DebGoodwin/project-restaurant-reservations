@@ -8,7 +8,7 @@ function ReservationForm(props) {
     return (
     <div className="card my-3 border-secondary">
         <h3 className="card-header text-white bg-secondary">Create Reservation</h3>
-        <div class="card-body"></div>
+        <div className="card-body"></div>
         <form onSubmit={submitHandler}>
      
            <div className="col-10 form-group">

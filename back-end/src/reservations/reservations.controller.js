@@ -20,6 +20,8 @@ const VALID_PROPERTIES = [
   "mobile_number",
   "reservation_date",
   "reservation_time",
+  "reservation_id",
+  "occupied",
 ]
 
 /**
@@ -134,7 +136,7 @@ async function reservationExists(req, res, next) {
   }
   return next ({
     status: 404,
-    message: "Reservation cannot be found."
+    message: `reservation_id: ${reservation_id} does not exist.`
   });
 }
 

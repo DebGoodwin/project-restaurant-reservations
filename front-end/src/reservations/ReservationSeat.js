@@ -47,10 +47,10 @@ function ReservationSeat() {
     return (  
         <div className="card my-3 border-secondary text-center w-85">  
             <h3 className="card-header text-white bg-secondary">Seat </h3>
-            <div class="card-body">
+            <div className="card-body">
             <form onSubmit={submitHandler}>
             <div className="form-group">
-                <h5 class="card-title">Table Number:</h5>
+                <h5 className="card-title">Table Number:</h5>
                     <label htmlFor="table-id">
                     <select className="form-control"
                             id="table_id" 
@@ -61,8 +61,7 @@ function ReservationSeat() {
                             <option value="">-- Select a Table --</option>
                             {tables.map((table)=> (
                                 <option key={table.table_id} 
-                                        value={table.table_id}
-                                        disabled={table.capacity < reservation.people || table.occupied}>
+                                        value={table.table_id}>
                                     {table.table_name} - {table.capacity}
                                 </option> 
                             ))}

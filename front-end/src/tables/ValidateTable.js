@@ -10,7 +10,7 @@ function ValidateTable(table) {
     }
 
     // Verify the capacity is a number and is greater than 0.
-    if (isNaN(capacity)){
+    if (isNaN(capacity) || !capacity){
         errors.push(new Error("Table capacity must be a number."));
     } else if (capacity < 1) {
         errors.push(new Error("Table capacity must be as least 1."));

@@ -15,8 +15,8 @@ function ReservationCreate() {
         last_name: "",
         mobile_number: "",
         reservation_date: "",
-        reservation_time:"",
-        people: 1,
+        reservation_time: "",
+        people: "",
     });
 
     

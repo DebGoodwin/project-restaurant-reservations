@@ -62,7 +62,7 @@ function Dashboard({ date }) {
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
       <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-      <button type="button" className="btn btn-secondary btn-sm m-2">Seat</button>
+      <button href={`/reservations/${reservation.reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button>
       </Link>
     </tr>
   ));
@@ -72,8 +72,8 @@ function Dashboard({ date }) {
     <main>  
       <div className="card my-3 border-secondary text-center">
         <h3 className="card-header text-white bg-secondary">Dashboard</h3>
-        <div class="card-body">
-          <h4 class="card-title">Reservations for: { dateString }</h4>
+        <div className="card-body">
+          <h4 className="card-title">Reservations for: { dateString }</h4>
           <Link to={`/dashboard?date=${previous(date)}`}>
             <button
               type="button"

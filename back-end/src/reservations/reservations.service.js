@@ -19,9 +19,9 @@ async function listByDate(date) {
         .orderBy("reservation_time");
 }
 
-async function read(reservationId) {
+async function read(reservation_id) {
     return knex("reservations")
-    .where("reservation_id", reservationId)
+    .where("reservation_id", reservation_id)
     .select("*")
     .first();
 }
