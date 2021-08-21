@@ -23,7 +23,7 @@ function ReservationSeat() {
         .then(setTables);
         //.catch(setSeatError);
 
-     readReservation(reservation_id, abortController.signal)
+      readReservation(reservation_id, abortController.signal)
         .then(setReservation);
         //.catch(setSeatError);
 
@@ -38,8 +38,11 @@ function ReservationSeat() {
 
     const submitHandler = async (event) => {
         event.preventDefault();
-        await updateTable(reservation.reservation_id, tableId);
 
+        const res = tables.filter(table => table.table_id === tableId);
+        if(!res.occupied) {
+            await updateTable(reservation.reservation_id, tableId);
+        }
         history.push("/dashboard");
     }
 

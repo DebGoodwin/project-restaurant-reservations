@@ -167,6 +167,7 @@ async function read(req, res) {
 }
 
 module.exports = {
+  reservationExists,
   list,
   create:  [hasProperties(...REQUIRED_PROPERTIES), 
             hasValidProperties(...VALID_PROPERTIES), 

@@ -2,8 +2,7 @@
 const service = require("./tables.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
-
-
+const reservationService = require("../reservations/reservations.service");
 
 const hasRequiredProperties = hasProperties("table_name", "capacity");
 const hasReservationId = hasProperties("reservation_id");
@@ -27,15 +26,15 @@ function nameIsValid(req, res, next) {
     if(table_name.length < 2) {
         return next({
             status: 400,
-            message: "Invalid table name",
+            message: "Invalid table_name",
         })
     }
     return next();
 }
 
 function capacityIsValid(req, res, next) {
-    const { capacity } = req.body.data;
-    if(capacity < 1 || isNaN(capacity)) {
+    const capacity = req.locals.table.capacity;
+    if(!capacity || capacity < 1 || isNaN(capacity)) {
         return next({
             status: 400,
             message: "Invalid capacity",
@@ -45,11 +44,14 @@ function capacityIsValid(req, res, next) {
 }
 
 function hasSufficientCapacity(req, res, next) {
-    const { capacity, people } = req.body.data;
+    //const { capacity, people } = req.body.data;
+    const capacity = res.locals.table.capacity;
+    const people = res.locals.reservation.people;
+
     if(capacity < people) {
         return next({
             status: 400,
-            message: "Table does not have enough seating for party size."
+            message: "Table does not have sufficient capacity."
         })
     }
     return next();
@@ -65,6 +67,22 @@ function tableisOccupied(req, res, next) {
     }
     return next();
 }
+
+async function reservationExists(req, res, next) {
+    const { reservation_id } = req.body.data;
+    const reservation = await reservationService.read(reservation_id);
+    res.locals.reservation = reservation;
+
+    if(!reservation) {
+        return next ({
+        status: 404,
+        message: `reservation_id: ${reservation_id} does not exist.`
+        });
+    }
+    return next();
+  }
+
+  // **CRUDL functions
 
 async function list(req, res) {
       const data = await service.list();
@@ -102,6 +120,7 @@ async function list(req, res) {
     update: [
         asyncErrorBoundary(tableExists),
         hasReservationId,
+        asyncErrorBoundary(reservationExists),
         hasSufficientCapacity,
         tableisOccupied,
         asyncErrorBoundary(update)],
