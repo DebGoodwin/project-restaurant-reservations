@@ -128,11 +128,15 @@ function duringOperationHours(req, res, next) {
 
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
-  const reservation = await service.read(reservation_id);
+  const rid = Number.parseInt(reservation_id);
+  if(rid) {
 
-  if(reservation) {
-    res.locals.reservation = reservation;
-    return next();
+    const reservation = await service.read(rid);
+
+    if(reservation) {
+      res.locals.reservation = reservation;
+      return next();
+    }
   }
   return next ({
     status: 404,
@@ -163,11 +167,10 @@ async function create(req, res) {
 
 async function read(req, res) {
   const reservation = res.locals.reservation;
-  res.json({ data: reservation })
+  res.status(200).json({ data: reservation })
 }
 
 module.exports = {
-  reservationExists,
   list,
   create:  [hasProperties(...REQUIRED_PROPERTIES), 
             hasValidProperties(...VALID_PROPERTIES), 

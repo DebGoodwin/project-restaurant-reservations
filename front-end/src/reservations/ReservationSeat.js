@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { listTables, updateTable, readReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 
 function ReservationSeat() {
@@ -10,7 +11,7 @@ function ReservationSeat() {
     const [reservation, setReservation] = useState({});
     const [tables, setTables] = useState([]);
     const [tableId, setTableId] = useState("");
-    //const [seatError, setSeatError] = useState([]);
+    const [seatErrors, setSeatErrors] = useState([]);
 
     
     useEffect(loadData, [reservation_id]);
@@ -19,13 +20,15 @@ function ReservationSeat() {
       const abortController = new AbortController();
   
       listTables(abortController.signal)
-        .then(res => res.filter(table => !table.occupied))
-        .then(setTables);
-        //.catch(setSeatError);
+        .then(res => res.filter(table => { 
+            return !table.occupied
+        }))
+        .then(setTables)
+        .catch(setSeatErrors);
 
       readReservation(reservation_id, abortController.signal)
-        .then(setReservation);
-        //.catch(setSeatError);
+        .then(setReservation)
+        .catch(setSeatErrors);
 
   
       return () => abortController.abort();
@@ -34,20 +37,36 @@ function ReservationSeat() {
 
     const changeHandler = (event) => {
        setTableId(event.target.value);
+
+       //setTableId((previousId)=> ({
+       // ...previousId,
+       // [target.name]: target.value,
+    //}));
+       
+      // const selectedTable = tables.find(table => table.table_id === parseInt(tableId));
+      // if(selectedTable && selectedTable.capacity < reservation.people) {
+      //     setSeatErrors(["Table capacity is too small for reservation party."]);
+      // } else if (!selectedTable) {
+      //     setSeatErrors(["Please select a table."]);
+      // } else {
+      //     setSeatErrors([]);
+      // }
     }
 
     const submitHandler = async (event) => {
         event.preventDefault();
-
-        const res = tables.filter(table => table.table_id === tableId);
-        if(!res.occupied) {
-            await updateTable(reservation.reservation_id, tableId);
-        }
-        history.push("/dashboard");
-    }
+        const abortController = new AbortController();
+        //if//const selectedTable = tables.find(table => table.table_id === parseInt(tableId));
+        //if(selectedTable && selectedTable.capacity < reservation.people) {
+            await updateTable(reservation.reservation_id, tableId, abortController.signal);
+            history.push("/dashboard");
+        //}
+    };
 
 
     return (  
+        <div>
+        <ErrorAlert errors={seatErrors} />
         <div className="card my-3 border-secondary text-center w-85">  
             <h3 className="card-header text-white bg-secondary">Seat </h3>
             <div className="card-body">
@@ -77,6 +96,7 @@ function ReservationSeat() {
                 </div>
             </form>
         </div>
+    </div>
     </div>
     )
 }

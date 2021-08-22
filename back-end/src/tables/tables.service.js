@@ -1,7 +1,6 @@
 const knex = require("../db/connection");
 
 
-
 async function create(newTable) {
     return knex("tables")
         .insert(newTable)
@@ -17,11 +16,19 @@ async function list() {
 async function read(table_id) {
     return knex("tables")
     .select("*")
-    .where({ table_id })
-    .first();
+    .where({ table_id: table_id })
+    .then((result) => result[0]);
 }
 
 async function update(table) {
+    return knex("tables")
+    .select("*")
+    .where({ table_id: table.table_id })
+    .update(table, "*")
+    .then((result) => result[0]);
+}
+
+async function finish(table) {
     return knex("tables")
     .select("*")
     .where({ table_id: table.table_id })
@@ -34,4 +41,5 @@ module.exports = {
     list,
     read,
     update,
+    finish,
 };

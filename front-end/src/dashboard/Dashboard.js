@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { listReservations, listTables, finishTable } from "../utils/api";
 import { previous, next, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import { Link } from "react-router-dom";
 import TableList from "../tables/TableList";
+import ReservationList from "../reservations/ReservationList";
 
 /**
  * Defines the dashboard page.
@@ -37,7 +38,7 @@ function Dashboard({ date }) {
       .then(setReservations);
 
     //listTables()
-    //  .then(setTables);
+    // .then(setTables);
 
     return () => abortController.abort();
   }
@@ -53,20 +54,34 @@ function Dashboard({ date }) {
 
   
 
-  const tableRows = reservations.map((reservation) => (
-    <tr key={reservation.reservation_id}>
-      <td>{reservation.first_name}</td>
-      <td>{reservation.last_name}</td>
-      <td>{reservation.mobile_number}</td>
-      <td>{reservation.reservation_date}</td>
-      <td>{reservation.reservation_time}</td>
-      <td>{reservation.people}</td>
-      <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-      <button href={`/reservations/${reservation.reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button>
-      </Link>
-    </tr>
-  ));
+  const tableRows = reservations.map((reservation) => {
+    return (
+      <ReservationList 
+        key={reservation.reservation_id}
+        reservation_id={reservation.reservation_id}
+        first_name={reservation.first_name}
+        last_name={reservation.last_name}
+        mobile_number={reservation.mobile_number}
+        reservation_date={reservation.reservation_date}
+        reservation_time={reservation.reservation_time}
+        people={reservation.people} 
+      />
+    )
+  });
 
+  async function finishHandler(table_id) {
+    const abortController = new AbortController();
+    const result = window.confirm(
+      "Is this table ready to seat new guests? This cannot be undone."
+    );
+
+    if (result) {
+      await finishTable(table_id, abortController.signal);
+      loadTables();
+    }
+
+    return () => abortController.abort();
+  }
 
   return (
     <main>  
@@ -120,7 +135,7 @@ function Dashboard({ date }) {
         </div>
         <div className="card my-3 border-secondary text-center">
           <h2 className="card-header text-white bg-secondary">Tables</h2>
-          <TableList tables={tables} />
+          <TableList tables={tables} finishHandler={finishHandler}/>
         </div>   
     </main>
   );
