@@ -22,6 +22,7 @@ function Dashboard({ date }) {
 
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
+  const [reservationsErrors, setReservationsErrors] = useState([]);
 
 
   // Format the date
@@ -35,22 +36,29 @@ function Dashboard({ date }) {
     const abortController = new AbortController();
 
     listReservations({ date }, abortController.signal)
-      .then(setReservations);
+      .then(setReservations)
+      .catch(setReservationsErrors);
 
-    //listTables()
-    // .then(setTables);
+
+    listTables()
+     .then(setTables)
+     .catch(setReservationsErrors);
 
     return () => abortController.abort();
   }
 
 
-  useEffect(loadTables, []);
-
+  //useEffect(loadTables, []);
+/*
   function loadTables() {
+    const abortController = new AbortController();
     listTables()
-    .then(setTables);
+    .then(setTables)
+    .catch(setReservationsErrors);
+
+    return () => abortController.abort();
   }
-  
+  */
 
   
 
@@ -65,6 +73,7 @@ function Dashboard({ date }) {
         reservation_date={reservation.reservation_date}
         reservation_time={reservation.reservation_time}
         people={reservation.people} 
+        status={reservation.status}
       />
     )
   });
@@ -77,7 +86,7 @@ function Dashboard({ date }) {
 
     if (result) {
       await finishTable(table_id, abortController.signal);
-      loadTables();
+      loadDashboard();
     }
 
     return () => abortController.abort();
@@ -92,7 +101,7 @@ function Dashboard({ date }) {
           <Link to={`/dashboard?date=${previous(date)}`}>
             <button
               type="button"
-              className="btn btn-secondary btn-sm m-2">
+              className="mob-table btn btn-secondary btn-sm m-2">
                 <span className="oi oi-arrow-thick-left" />
                   &nbsp;Previous
             </button>
@@ -114,7 +123,7 @@ function Dashboard({ date }) {
             </button>
           </Link>
           <div className="headingBar d-md-flex my-3 p-2">
-          <table className= "table table-condensed table-sm">
+          <table className= "mob-table table table-condensed table-sm">
           <thead>
             <tr>
               <th scope = "col">First:</th>
@@ -123,7 +132,7 @@ function Dashboard({ date }) {
               <th scope = "col">Date:</th>
               <th scope = "col">Time:</th>
               <th scope = "col">Party size:</th>
-              <th scope = "col">Seat:</th>
+              <th scope = "col">Status:</th>
             </tr>
           </thead>
           <tbody>

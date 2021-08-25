@@ -91,21 +91,38 @@ function tableisNotOccupied(req, res, next) {
 
 async function reservationExists(req, res, next) {
     const { reservation_id } = req.body.data;
-   // const rid = Number.parseInt(reservation_id);
-    //if(rid) {
+    const rid = Number.parseInt(reservation_id);
+    
+    if(rid) {
         const reservation = await reservationService.read(reservation_id);   
 
         if(reservation) {
-            res.locals.reservation = reservation;
-            return next();
-    //    }
-    
+        //    if(reservation.status !== "seated") {
+                res.locals.reservation = reservation;
+                return next();
+            //}
+        }
+        // return next ({
+        //     status: 400,
+        //     message: `reservation_id: ${reservation_id} is already seated.`,
+        // })
     }
     return next ({
         status: 404,
         message: `reservation_id: ${reservation_id} does not exist.`
-        });
+    });
+}
+
+function tableIsSeated(req, res, next) {
+    const seated = res.locals.reservation.status;
+    if(seated === "seated") {
+        return next ({
+            status:400,
+            message: "Table is already seated."
+        })
     }
+    return next();
+}
 
   // **CRUDL functions
 
@@ -116,6 +133,11 @@ async function list(req, res) {
   
   async function create(req, res) {
     const newTable = req.body.data;
+    if(newTable.reservation_id){
+        newTable.occupied = true;
+    } else {
+        newTable.occupied = false;
+    }
     const data = await service.create(newTable);
     res.status(201).json({ data });
   }
@@ -131,6 +153,7 @@ async function list(req, res) {
         reservation_id: reservation_id,
         occupied: true,
     }
+
     const data = await service.update(updatedTable);
     res.status(200).json({ data });
   }
@@ -143,8 +166,8 @@ async function list(req, res) {
           ...table,
           occupied: false,
       }
-
       const data = await service.finish(updatedTable);
+    
       res.status(200).json({ data });
   }
   

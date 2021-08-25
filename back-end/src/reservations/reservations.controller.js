@@ -10,7 +10,6 @@ const REQUIRED_PROPERTIES = [
   "mobile_number",
   "reservation_date",
   "reservation_time",
-  
 ]
 
 const VALID_PROPERTIES = [
@@ -21,7 +20,7 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "reservation_id",
-  "occupied",
+  "status",
 ]
 
 /**
@@ -135,6 +134,7 @@ async function reservationExists(req, res, next) {
 
     if(reservation) {
       res.locals.reservation = reservation;
+      console.log("***************REservation ID", reservation_id)
       return next();
     }
   }
@@ -142,6 +142,48 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `reservation_id: ${reservation_id} does not exist.`
   });
+}
+
+function statusIsValid(res, req, next) {
+  console.log("ENtering status is valid***")
+  const { status } = req.body.data;
+  const currStatus = res.locals.reservation.status;
+
+  const validStatus = ["booked", "seated", "finished", "cancelled"];
+  console.log("##### STATUS", status)
+  if(validStatus.includes(status)) {
+    res.locals.status = status;
+    console.log("****STatus is VALID", status);
+    return next();
+  }
+  return next({
+    status: 400,
+    message: `invalid status ${status}.`
+  });
+}
+
+function statusIsNotFinished(req, res, next) {
+  const { status } = res.locals.status;
+  if(status === "finished") {
+    return next ({
+      status: 400,
+      message: "A finished reservation cannot be updated."
+    })
+  }
+  console.log("STATUS NOT SET TO FINISHED!!!!!!")
+  return next();
+}
+
+function statusIsBooked(req, res, next) {
+  const { status } = req.body.data;
+console.log("Status------", status)
+  if(status && status !== "booked") {
+    return next ({
+      status: 400,
+      message: "Status must be set to booked when creating a new reservation."
+    });
+  }
+  return next();
 }
 
 /**
@@ -161,8 +203,8 @@ async function list(req, res) {
 
 async function create(req, res) {
   const newReservation = req.body.data;
-  const data = await service.create(newReservation);
-  res.status(201).json({ data: newReservation });
+  const data = await service.create(newReservation);   
+  res.status(201).json({ data: data });       
 }
 
 async function read(req, res) {
@@ -170,17 +212,58 @@ async function read(req, res) {
   res.status(200).json({ data: reservation })
 }
 
+async function updateStatus(req, res) {
+  const { status } = res.locals;
+  const { reservation_id } = res.locals.reservation;
+ 
+  const updatedRes = await service.updateStatus(reservation_id, status);
+  res.status(200).json({ data: updatedRes });
+}
+
+async function update(req, res) {
+  const { reservation } = req.body.data;
+
+  const updatedReservation = {
+    ...reservation,
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await service.update(updatedReservation);
+  res.status(200).json({ data });
+}
+
+
 module.exports = {
   list,
-  create:  [hasProperties(...REQUIRED_PROPERTIES), 
-            hasValidProperties(...VALID_PROPERTIES), 
-            dateIsValid, 
-            timeIsValid, 
-            peopleIsValidNumber,
-            notTuesday,
-            notPastDate,
-            duringOperationHours,
-            asyncErrorBoundary(create)],
-  read:    [reservationExists,
-            asyncErrorBoundary(read)],
+  create:  [
+      hasProperties(...REQUIRED_PROPERTIES), 
+      hasValidProperties(...VALID_PROPERTIES), 
+      dateIsValid, 
+      timeIsValid, 
+      peopleIsValidNumber,
+      notTuesday,
+      notPastDate,
+      duringOperationHours,
+      statusIsBooked,
+      asyncErrorBoundary(create)
+  ],
+  read:    [
+      reservationExists,
+      asyncErrorBoundary(read)
+  ],
+  updateStatus: [
+      reservationExists,
+      statusIsValid,
+      statusIsNotFinished,
+      asyncErrorBoundary(updateStatus),
+  ],
+  update:  [
+      hasProperties(...REQUIRED_PROPERTIES), 
+      hasValidProperties(...VALID_PROPERTIES), 
+      dateIsValid, 
+      timeIsValid, 
+      peopleIsValidNumber,
+      reservationExists,
+      statusIsValid,
+      asyncErrorBoundary()
+  ]
 };

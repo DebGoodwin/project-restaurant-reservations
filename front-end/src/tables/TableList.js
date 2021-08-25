@@ -9,13 +9,7 @@ function TableList (props) {
           <td>{table.capacity}</td>
           <td data-table-id-status={table.table_id} >
             {table.occupied ? "occupied" : "free"}</td>
-            {table.occupied ? (<button 
-                                data-table-id-finish={table.table_id}
-                                className="btn btn-secondary btn-sm m-2"
-                                onClick={() => finishHandler(table.table_id)}
-                                    >Finish
-                                </button>
-                                ):""}
+          <td>  {table.occupied ? (<button data-table-id-finish={table.table_id} className="btn btn-secondary btn-sm m-2" onClick={() => finishHandler(table.table_id)}>Finish</button>):""}</td>
         </tr>
       ));
 
@@ -29,6 +23,7 @@ function TableList (props) {
                         <th scope = "col">Table name: </th>
                         <th scope = "col">Seats: </th>
                         <th scope = "col">Status: </th>
+                        <th scope = "col">Complete: </th>
                     </tr>
                 </thead>
                 <tbody>

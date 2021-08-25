@@ -1,3 +1,17 @@
+
+@media all and (max-width: 800px) {
+  .mob-table thead {
+    display: none;
+  }
+  .mob-table td {
+    display: flex;
+  }
+
+  hr {
+    border: 1px solid black;
+  }
+  
+}
 .side-bar {
   background-color: #393a44;
   min-width: 200px;
@@ -6,3 +20,4 @@
 .table-condensed {
   font-size: 12px;
 }
+

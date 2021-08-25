@@ -27,6 +27,7 @@ function ReservationSeat() {
         .catch(setSeatErrors);
 
       readReservation(reservation_id, abortController.signal)
+        .then(console.log("RESERVATION SEAT", reservation_id))
         .then(setReservation)
         .catch(setSeatErrors);
 
@@ -58,9 +59,11 @@ function ReservationSeat() {
         const abortController = new AbortController();
         //if//const selectedTable = tables.find(table => table.table_id === parseInt(tableId));
         //if(selectedTable && selectedTable.capacity < reservation.people) {
+            console.log("RES ID", reservation_id)
             await updateTable(reservation.reservation_id, tableId, abortController.signal);
             history.push("/dashboard");
         //}
+        return () => abortController.abort();
     };
 
 
