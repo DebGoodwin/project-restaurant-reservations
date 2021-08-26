@@ -20,14 +20,15 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "reservation_id",
-  "status",
+  
 ]
 
 /**
  * Middleware validation functions
  * 
- * 
  */
+
+// Verify the date is a valid date field.
 function dateIsValid (req, res, next) {
   const { reservation_date } = req.body.data;
   const date = Date.parse(reservation_date);
@@ -42,6 +43,7 @@ function dateIsValid (req, res, next) {
   }
 }
 
+// verify the time is a valid time field.
 function timeIsValid (req, res, next) {
   const { reservation_time } = req.body.data ;
   const regex = new RegExp("([01]?[0-9]|2[0-3]):[0-5][0-9]");
@@ -55,6 +57,7 @@ function timeIsValid (req, res, next) {
   });
 }
 
+// Verify the party size is and integer greater than 0.
 function peopleIsValidNumber (req, res, next) {
   const { people } = req.body.data;
   const valid = Number.isInteger(people);
@@ -68,6 +71,7 @@ function peopleIsValidNumber (req, res, next) {
   })
 }
 
+// Verify the reservation date does not fall on a Tuesday.
 function notTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   const date = new Date(reservation_date);
@@ -82,6 +86,7 @@ function notTuesday(req, res, next) {
   });
 }
 
+// Verify the reservation date/time is not in the past
 function notPastDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
 
@@ -107,7 +112,7 @@ function notPastDate(req, res, next) {
 }
 
 
-
+// verify the reservation date/time is made during operating hours.
 function duringOperationHours(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
   const reservationDate = new Date(`${reservation_date} ${reservation_time}`);
@@ -125,6 +130,7 @@ function duringOperationHours(req, res, next) {
   })
 }
 
+// Verify the reservation exists
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
   const rid = Number.parseInt(reservation_id);
@@ -134,7 +140,6 @@ async function reservationExists(req, res, next) {
 
     if(reservation) {
       res.locals.reservation = reservation;
-      console.log("***************REservation ID", reservation_id)
       return next();
     }
   }
@@ -144,51 +149,62 @@ async function reservationExists(req, res, next) {
   });
 }
 
-function statusIsValid(res, req, next) {
+// Verify the status is valid.
+function statusIsValid(req, res, next) {
   console.log("ENtering status is valid***")
+  //const status = res.locals.reservation.status;
   const { status } = req.body.data;
-  const currStatus = res.locals.reservation.status;
 
-  const validStatus = ["booked", "seated", "finished", "cancelled"];
-  console.log("##### STATUS", status)
-  if(validStatus.includes(status)) {
-    res.locals.status = status;
-    console.log("****STatus is VALID", status);
+  if(status) {
+    const validStatus = ["booked", "seated", "finished", "cancelled"];
+
+    if (validStatus.includes(status)) {
+      res.locals.status = status;
+      return next();
+    }
+    return next({
+      status: 400,
+      message: `invalid status ${status}.`
+    });
+  } else {
+    res.locals.status = "booked";
     return next();
+    
   }
-  return next({
-    status: 400,
-    message: `invalid status ${status}.`
-  });
+
 }
 
+// Verify the status has not already been finished.
 function statusIsNotFinished(req, res, next) {
-  const { status } = res.locals.status;
+  const status = res.locals.reservation.status;
   if(status === "finished") {
     return next ({
       status: 400,
-      message: "A finished reservation cannot be updated."
+      message: `A finished reservation cannot be updated. ${status}`
     })
   }
-  console.log("STATUS NOT SET TO FINISHED!!!!!!")
+  
   return next();
 }
 
+// Verify that status has been set to booked when creating a new reservation.
 function statusIsBooked(req, res, next) {
   const { status } = req.body.data;
-console.log("Status------", status)
+
   if(status && status !== "booked") {
     return next ({
       status: 400,
-      message: "Status must be set to booked when creating a new reservation."
+      message: `Status must be set to booked when creating a new reservation. Status: ${status}`
     });
   }
   return next();
 }
 
 /**
- * List handler for reservations
+ * CRUDL functions
+ * 
  */
+
 async function list(req, res) {
   const { date } = req.query;
 
@@ -203,6 +219,11 @@ async function list(req, res) {
 
 async function create(req, res) {
   const newReservation = req.body.data;
+
+  if(!newReservation.status){
+    newReservation.status = "booked";
+  } 
+
   const data = await service.create(newReservation);   
   res.status(201).json({ data: data });       
 }

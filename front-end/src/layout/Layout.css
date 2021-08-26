@@ -1,5 +1,5 @@
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 600px) {
   .mob-table thead {
     display: none;
   }
