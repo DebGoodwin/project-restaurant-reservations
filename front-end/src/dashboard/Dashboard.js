@@ -4,7 +4,7 @@ import { previous, next, today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import { Link } from "react-router-dom";
 import TableList from "../tables/TableList";
-import ReservationList from "../reservations/ReservationList";
+import ReservationDetails from "../reservations/ReservationDetails";
 
 /**
  * Defines the dashboard page.
@@ -64,7 +64,7 @@ function Dashboard({ date }) {
 
   const tableRows = reservations.map((reservation) => {
     return (
-      <ReservationList 
+      <ReservationDetails 
         key={reservation.reservation_id}
         reservation_id={reservation.reservation_id}
         first_name={reservation.first_name}

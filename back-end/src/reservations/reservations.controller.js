@@ -207,14 +207,19 @@ function statusIsBooked(req, res, next) {
 
 async function list(req, res) {
   const { date } = req.query;
-
-  if(date) {
+  const { mobile_number } = req.query;
+  
+  if (date) {
     const data = await service.listByDate(date);
+    res.json({ data });
+  } else if (mobile_number){
+    const data = await service.search(mobile_number);
     res.json({ data });
   } else {
     const data = await service.list();
     res.json({ data });
   }
+ 
 }
 
 async function create(req, res) {
@@ -253,8 +258,9 @@ async function update(req, res) {
 }
 
 
+
 module.exports = {
-  list,
+  list: asyncErrorBoundary(list),
   create:  [
       hasProperties(...REQUIRED_PROPERTIES), 
       hasValidProperties(...VALID_PROPERTIES), 
@@ -286,5 +292,5 @@ module.exports = {
       reservationExists,
       statusIsValid,
       asyncErrorBoundary()
-  ]
+  ],
 };

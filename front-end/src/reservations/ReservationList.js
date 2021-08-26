@@ -1,25 +1,54 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import ReservationDetails from "./ReservationDetails";
 
-function ReservationList(props) {
-    const { reservation_id, first_name, last_name, mobile_number, reservation_date, reservation_time, people, status } = props;
 
-    return (  
-        <> 
-        <tr key={reservation_id}>
-            <td>{first_name}</td>
-            <td>{last_name}</td>
-            <td>{mobile_number}</td>
-            <td>{reservation_date}</td>
-            <td>{reservation_time}</td>
-            <td>{people}</td>
-            <td data-reservation-id-status={reservation_id}>{status}</td>
-            <td> {status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button></Link>):""}</td>
-            <hr/>
-        </tr> 
-      
-        </>
-    );
+function ReservationList({ reservations }) {
+
+    const reservationRows = reservations.map((reservation) => {
+        return (
+       
+        <ReservationDetails 
+            key={reservation.reservation_id}
+            reservation_id={reservation.reservation_id}
+            first_name={reservation.first_name}
+            last_name={reservation.last_name}
+            mobile_number={reservation.mobile_number}
+            reservation_date={reservation.reservation_date}
+            reservation_time={reservation.reservation_time}
+            people={reservation.people} 
+            status={reservation.status}
+        />
+        
+        )
+    });
+
+    if(reservations[0] !== "No reservations found") {
+    return (
+        <div className="headingBar d-md-flex my-3 p-2">
+          <table className= "mob-table table table-condensed table-sm">
+          <thead>
+            <tr>
+              <th scope = "col">First:</th>
+              <th scope = "col">Last:</th>
+              <th scope = "col">Mobile:</th>
+              <th scope = "col">Date:</th>
+              <th scope = "col">Time:</th>
+              <th scope = "col">Party size:</th>
+              <th scope = "col">Status:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reservationRows}
+          </tbody>
+          </table>
+        </div>
+     
+    )
+    } else {
+        return (
+            <h4 className="headingBar d-md-flex my-3 p-2"> No reservations found</h4>
+        )
+    }
 }
-
+  
 export default ReservationList;
