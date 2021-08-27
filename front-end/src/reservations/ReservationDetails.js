@@ -1,9 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { updateStatus } from "../utils/api";
+
 
 function ReservationDetails(props) {
     const { reservation_id, first_name, last_name, mobile_number, reservation_date, reservation_time, people, status } = props;
+    const history = useHistory();
 
+ async function cancelHandler(reservation_id) {
+    const abortController = new AbortController();
+    const result = window.confirm(
+      "Do you want to cancel this reservation? This cannot be undone."
+    );
+
+    if (result) {
+      await updateStatus(reservation_id, "cancelled", abortController.signal);
+      history.goBack();
+    }
+
+    return () => abortController.abort();
+  }
     return (  
         <> 
         <tr key={reservation_id}>
@@ -14,7 +30,9 @@ function ReservationDetails(props) {
             <td>{reservation_time}</td>
             <td>{people}</td>
             <td data-reservation-id-status={reservation_id}>{status}</td>
-            <td> {status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button></Link>):""}</td>   
+            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button></Link>):""}</td>
+            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/edit`}><button href={`/reservations/${reservation_id}/edit`} type="button" className="btn btn-secondary btn-sm m-2">Edit</button></Link>):""}</td>
+            <td> {status === "booked" ? (<button data-reservation-id-cancel={reservation_id} className="btn btn-secondary btn-sm m-2" onClick={() => cancelHandler(reservation_id)}>Cancel</button>):""}</td>       
         </tr>  
     
         </>

@@ -1,25 +1,31 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { createReservation } from "../utils/api";
+import React, { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { readReservation, updateReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ValidateReservation from "./ValidateReservation";
 import ReservationForm from "./ReservationForm";
+import { formatAsDate } from "../utils/date-time";
 
+function ReservationEdit() {
 
-function ReservationCreate() {
     const history = useHistory();
-    const [reservationErrors, setReservationErrors] = useState([]);
-    
-    const [reservation, setReservation] = useState({
-        first_name: "",
-        last_name: "",
-        mobile_number: "",
-        reservation_date: "",
-        reservation_time: "",
-        people: "",
-    });
+    const { reservation_id } = useParams();
 
-    
+    const [reservation, setReservation] = useState({});
+    const [reservationErrors, setReservationErrors] = useState([]);
+
+    const getReservationData = async(reservation_id) => {
+        const reservation = await readReservation(reservation_id);
+        
+        reservation.reservation_date = formatAsDate(reservation.reservation_date);
+
+        setReservation(reservation);
+    }
+
+    useEffect(() => {
+        getReservationData(reservation_id);
+    }, [reservation_id]);
+
     const submitHandler = (event) => {
         event.preventDefault();
 
@@ -28,7 +34,7 @@ function ReservationCreate() {
             console.log(errors)
             setReservationErrors(errors);
         } else {
-            createReservation(reservation)
+            updateReservation(reservation)
                 .then(() => {
                 history.push(`/dashboard?date=${reservation.reservation_date}`);
                 })
@@ -52,21 +58,18 @@ function ReservationCreate() {
         }
     }
     
-  
 
-  return (
-    <div>
-        <ErrorAlert errors={reservationErrors} />
-        <ReservationForm
-            title="Create"
-            reservation={reservation}
-            changeHandler={changeHandler}
-            submitHandler={submitHandler}
-        />
-       
-    </div>
-  );
-
+    return (
+        <>
+            <ErrorAlert errors={reservationErrors} />
+            <ReservationForm
+                title="Edit"
+                reservation={reservation}
+                changeHandler={changeHandler}
+                submitHandler={submitHandler}
+            />
+        </>
+    )
 }
 
-export default ReservationCreate;
+export default ReservationEdit;

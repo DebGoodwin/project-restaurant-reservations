@@ -1,8 +1,12 @@
 import React from "react";
 import ReservationDetails from "./ReservationDetails";
+//import { formatReservationDate } from "../utils/format-reservation-date"
+
 
 
 function ReservationList({ reservations }) {
+  
+  //const formattedList = formatReservationDate(reservations);
 
     const reservationRows = reservations.map((reservation) => {
         return (

@@ -150,5 +150,7 @@ export async function updateStatus(reservation_id, status, signal) {
 
 export async function searchReservationByMobile(mobile_number, signal) {
   const url = `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`;
-  return await fetchJson(url, { signal });
+  return await fetchJson(url, { signal })
+  .then(formatReservationDate)
+  .then(formatReservationTime);
 }

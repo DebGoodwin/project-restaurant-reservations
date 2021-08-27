@@ -151,10 +151,8 @@ async function reservationExists(req, res, next) {
 
 // Verify the status is valid.
 function statusIsValid(req, res, next) {
-  console.log("ENtering status is valid***")
-  //const status = res.locals.reservation.status;
   const { status } = req.body.data;
-
+  
   if(status) {
     const validStatus = ["booked", "seated", "finished", "cancelled"];
 
@@ -169,7 +167,6 @@ function statusIsValid(req, res, next) {
   } else {
     res.locals.status = "booked";
     return next();
-    
   }
 
 }
@@ -247,11 +244,12 @@ async function updateStatus(req, res) {
 }
 
 async function update(req, res) {
-  const { reservation } = req.body.data;
-
+  console.log("Entering Update+++")
+  const reservation = req.body.data;
+ console.log("Reservation:", reservation)
   const updatedReservation = {
     ...reservation,
-    reservation_id: res.locals.reservation.reservation_id,
+    reservation_id: reservation.reservation_id,
   };
   const data = await service.update(updatedReservation);
   res.status(200).json({ data });
@@ -291,6 +289,6 @@ module.exports = {
       peopleIsValidNumber,
       reservationExists,
       statusIsValid,
-      asyncErrorBoundary()
+      asyncErrorBoundary(update),
   ],
 };

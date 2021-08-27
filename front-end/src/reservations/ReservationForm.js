@@ -2,12 +2,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 function ReservationForm(props) {
-    const { reservation, changeHandler, submitHandler } = props;
+    const { title, reservation, changeHandler, submitHandler } = props;
     const history = useHistory();
 
     return (
     <div className="card my-3 border-secondary">
-        <h3 className="card-header text-white bg-secondary">Create Reservation</h3>
+        <h3 className="card-header text-white bg-secondary">{title} Reservation</h3>
         <div className="card-body"></div>
         <form onSubmit={submitHandler}>
      
