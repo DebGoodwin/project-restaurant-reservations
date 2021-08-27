@@ -79,7 +79,7 @@ function ReservationForm(props) {
                     required={true}
                 /><br/>
               <div>
-                    <button type="button" className="btn btn-secondary m-2" onClick={()=> history.push("/")}> Cancel </button>
+                    <button type="button" className="btn btn-secondary m-2" onClick={()=>  history.goBack()}> Cancel </button>
                     <button type="submit" className="btn btn-primary m-2"> Submit </button>
               </div>
             </div>

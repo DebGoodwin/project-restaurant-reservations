@@ -7,6 +7,7 @@ function ReservationDetails(props) {
     const { reservation_id, first_name, last_name, mobile_number, reservation_date, reservation_time, people, status } = props;
     const history = useHistory();
 
+    //const date = reservation_date;
  async function cancelHandler(reservation_id) {
     const abortController = new AbortController();
     const result = window.confirm(
@@ -15,7 +16,8 @@ function ReservationDetails(props) {
 
     if (result) {
       await updateStatus(reservation_id, "cancelled", abortController.signal);
-      history.goBack();
+      //history.push(`/dashboard?date=${reservation_date}`);
+      history.go(0)
     }
 
     return () => abortController.abort();
