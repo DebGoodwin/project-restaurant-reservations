@@ -31,38 +31,25 @@ function ReservationSeat() {
         .then(setReservation)
         .catch(setSeatErrors);
 
-  
       return () => abortController.abort();
     }
 
 
     const changeHandler = (event) => {
        setTableId(event.target.value);
-
-       //setTableId((previousId)=> ({
-       // ...previousId,
-       // [target.name]: target.value,
-    //}));
-       
-      // const selectedTable = tables.find(table => table.table_id === parseInt(tableId));
-      // if(selectedTable && selectedTable.capacity < reservation.people) {
-      //     setSeatErrors(["Table capacity is too small for reservation party."]);
-      // } else if (!selectedTable) {
-      //     setSeatErrors(["Please select a table."]);
-      // } else {
-      //     setSeatErrors([]);
-      // }
     }
 
     const submitHandler = async (event) => {
         event.preventDefault();
         const abortController = new AbortController();
-        //if//const selectedTable = tables.find(table => table.table_id === parseInt(tableId));
-        //if(selectedTable && selectedTable.capacity < reservation.people) {
-            console.log("RES ID", reservation_id)
+
+        const selectedTable = tables.find(table => table.table_id === Number(tableId));
+        if(selectedTable.capacity < reservation.people) {
+            setSeatErrors([new Error("Table capacity is not big enough for party size.")]);
+        } else {
             await updateTable(reservation.reservation_id, tableId, abortController.signal);
             history.push("/dashboard");
-        //}
+        }
         return () => abortController.abort();
     };
 

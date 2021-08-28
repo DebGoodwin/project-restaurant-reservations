@@ -5,6 +5,7 @@ import useQuery from "../utils/useQuery";
 import { Link } from "react-router-dom";
 import TableList from "../tables/TableList";
 import ReservationDetails from "../reservations/ReservationDetails";
+import ErrorAlert from "../layout/ErrorAlert";
 
 /**
  * Defines the dashboard page.
@@ -47,19 +48,6 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   }
 
-
-  //useEffect(loadTables, []);
-/*
-  function loadTables() {
-    const abortController = new AbortController();
-    listTables()
-    .then(setTables)
-    .catch(setReservationsErrors);
-
-    return () => abortController.abort();
-  }
-  */
-
   
 
   const tableRows = reservations.map((reservation) => {
@@ -94,6 +82,7 @@ function Dashboard({ date }) {
 
   return (
     <main>  
+      <ErrorAlert errors={reservationsErrors} />
       <div className="card my-3 border-secondary text-center">
         <h3 className="card-header text-white bg-secondary">Dashboard</h3>
         <div className="card-body">
@@ -123,7 +112,8 @@ function Dashboard({ date }) {
             </button>
           </Link>
           <div className="headingBar d-md-flex my-3 p-2">
-          <table className= "mob-table table table-condensed table-sm">
+          <div className="table-responsive-sm">
+          <table className= "mob-table table table-condensed table-sm table-striped">
           <thead>
             <tr>
               <th scope = "col">First:</th>
@@ -133,12 +123,17 @@ function Dashboard({ date }) {
               <th scope = "col">Time:</th>
               <th scope = "col">Party size:</th>
               <th scope = "col">Status:</th>
+              <th scope = "col">Seat:</th>
+              <th scope = "col">Edit:</th>
+              <th scope = "col">Cancel:</th>
+
             </tr>
           </thead>
           <tbody>
             {tableRows}
           </tbody>
           </table>
+          </div>
         </div>
         </div>
         </div>

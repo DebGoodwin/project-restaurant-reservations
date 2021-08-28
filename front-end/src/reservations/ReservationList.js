@@ -29,7 +29,7 @@ function ReservationList({ reservations }) {
     if(reservations[0] !== "No reservations found") {
     return (
         <div className="headingBar d-md-flex my-3 p-2">
-          <table className= "mob-table table table-condensed table-sm">
+          <table className= "mob-table table table-condensed table-sm table-striped">
           <thead>
             <tr>
               <th scope = "col">First:</th>
@@ -39,6 +39,9 @@ function ReservationList({ reservations }) {
               <th scope = "col">Time:</th>
               <th scope = "col">Party size:</th>
               <th scope = "col">Status:</th>
+              <th scope = "col">Seat:</th>
+              <th scope = "col">Edit:</th>
+              <th scope = "col">Cancel:</th>
             </tr>
           </thead>
           <tbody>

@@ -25,16 +25,16 @@ function ReservationDetails(props) {
     return (  
         <> 
         <tr key={reservation_id}>
-            <td>{first_name}</td>
-            <td>{last_name}</td>
-            <td>{mobile_number}</td>
-            <td>{reservation_date}</td>
-            <td>{reservation_time}</td>
-            <td>{people}</td>
-            <td data-reservation-id-status={reservation_id}>{status}</td>
-            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-secondary btn-sm m-2">Seat</button></Link>):""}</td>
-            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/edit`}><button href={`/reservations/${reservation_id}/edit`} type="button" className="btn btn-secondary btn-sm m-2">Edit</button></Link>):""}</td>
-            <td> {status === "booked" ? (<button data-reservation-id-cancel={reservation_id} className="btn btn-secondary btn-sm m-2" onClick={() => cancelHandler(reservation_id)}>Cancel</button>):""}</td>       
+            <td className="align-middle">{first_name}</td>
+            <td className="align-middle">{last_name}</td>
+            <td className="align-middle">{mobile_number}</td>
+            <td className="align-middle">{reservation_date}</td>
+            <td className="align-middle">{reservation_time}</td>
+            <td className="align-middle">{people}</td>
+            <td className="align-middle" data-reservation-id-status={reservation_id}>{status}</td>
+            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-sm btn-secondary  m-1">Seat</button></Link>):""}</td>
+            <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/edit`}><button href={`/reservations/${reservation_id}/edit`} type="button" className="btn btn-secondary btn-sm m-1">Edit</button></Link>):""}</td>
+            <td> {status === "booked" ? (<button data-reservation-id-cancel={reservation_id} className="btn btn-secondary btn-sm m-1" onClick={() => cancelHandler(reservation_id)}>Cancel</button>):""}</td>       
         </tr>  
     
         </>
