@@ -15,6 +15,7 @@ const VALID_PROPERTIES_RES = [
     "reservation_id",
 ]
 
+
 /***
  * Validation middleware
  * 
@@ -105,15 +106,9 @@ async function reservationExists(req, res, next) {
         const reservation = await reservationService.read(reservation_id);   
 
         if(reservation) {
-        //    if(reservation.status !== "seated") {
-                res.locals.reservation = reservation;
-                return next();
-            //}
+            res.locals.reservation = reservation;
+            return next();
         }
-        // return next ({
-        //     status: 400,
-        //     message: `reservation_id: ${reservation_id} is already seated.`,
-        // })
     }
     return next ({
         status: 404,
@@ -138,6 +133,7 @@ function tableIsSeated(req, res, next) {
  * CRUDL functions
  * 
  */
+
 async function list(req, res) {
       const data = await service.list();
       res.json({ data });
@@ -145,6 +141,7 @@ async function list(req, res) {
   
   async function create(req, res) {
     const newTable = req.body.data;
+
     if(newTable.reservation_id){
         newTable.occupied = true;
     } else {
@@ -154,7 +151,7 @@ async function list(req, res) {
     res.status(201).json({ data });
   }
 
-  // seat a reservation at a table
+  // To seat a reservation at a table, we need to update the table, then update the reservation to seated.
   async function update(req, res) {
     const { table } = res.locals;
     const { reservation_id } = res.locals.reservation;

@@ -3,7 +3,7 @@
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
 import formatReservationDate from "./format-reservation-date";
-import formatReservationTime from "./format-reservation-date";
+import formatReservationTime from "./format-reservation-time";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
@@ -68,21 +68,15 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-
-/**
- *  Creates a reservation
- * 
- */
-
 export async function createReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
-    const options = {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ data: reservation }),
-      signal,
-     };
-     return await fetchJson(url, options);
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
+    };
+  return await fetchJson(url, options);
 }
 
 export async function readReservation(reservation_id, signal) {
@@ -97,13 +91,13 @@ export async function listTables(params, signal) {
 
 export async function createTable(table, signal) {
   const url = `${API_BASE_URL}/tables`;
-    const options = {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ data: table }),
-      signal,
-     };
-     return await fetchJson(url, options);
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: table }),
+    signal,
+    };
+  return await fetchJson(url, options);
 }
 
 export async function updateTable(reservation_id, table_id, signal) {

@@ -40,7 +40,6 @@ function Dashboard({ date }) {
       .then(setReservations)
       .catch(setReservationsErrors);
 
-
     listTables()
      .then(setTables)
      .catch(setReservationsErrors);

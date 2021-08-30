@@ -27,7 +27,6 @@ function ReservationSeat() {
         .catch(setSeatErrors);
 
       readReservation(reservation_id, abortController.signal)
-        .then(console.log("RESERVATION SEAT", reservation_id))
         .then(setReservation)
         .catch(setSeatErrors);
 
@@ -55,39 +54,39 @@ function ReservationSeat() {
 
 
     return (  
-        <div>
-        <ErrorAlert errors={seatErrors} />
-        <div className="card my-3 border-secondary text-center w-85">  
-            <h3 className="card-header text-white bg-secondary">Seat </h3>
-            <div className="card-body">
-            <form onSubmit={submitHandler}>
-            <div className="form-group">
-                <h5 className="card-title">Table Number:</h5>
-                    <label htmlFor="table-id">
-                    <select className="form-control"
-                            id="table_id" 
-                            name="table_id" 
-                            value={tableId} 
-                            required={true} 
-                            onChange={changeHandler}>
-                            <option value="">-- Select a Table --</option>
-                            {tables.map((table)=> (
-                                <option key={table.table_id} 
-                                        value={table.table_id}>
-                                    {table.table_name} - {table.capacity}
-                                </option> 
-                            ))}
-                    </select> 
-                    </label>  
+        <>
+            <ErrorAlert errors={seatErrors} />
+            <div className="card my-3 border-secondary text-center w-85">  
+                <h3 className="card-header text-white bg-secondary">Seat </h3>
+                <div className="card-body">
+                    <form onSubmit={submitHandler}>
+                    <div className="form-group">
+                        <h5 className="card-title">Table Number:</h5>
+                            <label htmlFor="table-id">
+                            <select className="form-control"
+                                id="table_id" 
+                                name="table_id" 
+                                value={tableId} 
+                                required={true} 
+                                onChange={changeHandler}>
+                                <option value="">-- Select a Table --</option>
+                                {tables.map((table)=> (
+                                    <option key={table.table_id} 
+                                            value={table.table_id}>
+                                        {table.table_name} - {table.capacity}
+                                    </option> 
+                                ))}
+                            </select> 
+                            </label>  
+                    </div>
+                    <div>
+                        <button type="button" className="btn btn-secondary m-2" onClick={()=> history.push("/")}> Cancel </button>
+                        <button type="submit" className="btn btn-primary m-2"> Submit </button>
+                    </div>
+                    </form>
                 </div>
-                <div>
-                    <button type="button" className="btn btn-secondary m-2" onClick={()=> history.push("/")}> Cancel </button>
-                    <button type="submit" className="btn btn-primary m-2"> Submit </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
+            </div>
+        </>
     )
 }
 

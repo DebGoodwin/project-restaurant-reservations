@@ -1,14 +1,4 @@
 
- /*@media all and (max-width: 600px) {
-  .mob-table thead {
-    display: none;
-  }
-
-  .mob-table td {
-    display: flex;
-  } 
-}*/
-
 .side-bar {
   background-color: #393a44;
   min-width: 200px;
@@ -23,3 +13,7 @@ table td {
   vertical-align: center;
   text-align: center;
 } 
+
+table {
+  width: auto;
+}

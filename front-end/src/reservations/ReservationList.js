@@ -1,35 +1,30 @@
 import React from "react";
 import ReservationDetails from "./ReservationDetails";
-//import { formatReservationDate } from "../utils/format-reservation-date"
-
 
 
 function ReservationList({ reservations }) {
-  
-  //const formattedList = formatReservationDate(reservations);
 
-    const reservationRows = reservations.map((reservation) => {
-        return (
-       
-        <ReservationDetails 
-            key={reservation.reservation_id}
-            reservation_id={reservation.reservation_id}
-            first_name={reservation.first_name}
-            last_name={reservation.last_name}
-            mobile_number={reservation.mobile_number}
-            reservation_date={reservation.reservation_date}
-            reservation_time={reservation.reservation_time}
-            people={reservation.people} 
-            status={reservation.status}
-        />
-        
-        )
-    });
-
-    if(reservations[0] !== "No reservations found") {
+  const reservationRows = reservations.map((reservation) => {
     return (
-        <div className="headingBar d-md-flex my-3 p-2">
-          <table className= "mob-table table table-condensed table-sm table-striped">
+      <ReservationDetails 
+          key={reservation.reservation_id}
+          reservation_id={reservation.reservation_id}
+          first_name={reservation.first_name}
+          last_name={reservation.last_name}
+          mobile_number={reservation.mobile_number}
+          reservation_date={reservation.reservation_date}
+          reservation_time={reservation.reservation_time}
+          people={reservation.people} 
+          status={reservation.status}
+      />
+    )
+  });
+
+  if(reservations[0] !== "No reservations found") {
+    return (
+      <div className="headingBar d-md-flex my-3 p-2">
+         <div className="table-responsive-md">
+          <table className= "table table-condensed table-striped">
           <thead>
             <tr>
               <th scope = "col">First:</th>
@@ -48,14 +43,14 @@ function ReservationList({ reservations }) {
             {reservationRows}
           </tbody>
           </table>
+          </div>
         </div>
-     
     )
-    } else {
-        return (
-            <h4 className="headingBar d-md-flex my-3 p-2"> No reservations found</h4>
-        )
-    }
+  } else {
+      return (
+          <h4 className="headingBar d-md-flex my-3 p-2"> No reservations found</h4>
+      )
+  }
 }
   
 export default ReservationList;

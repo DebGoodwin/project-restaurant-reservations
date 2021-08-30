@@ -15,18 +15,17 @@ async function list() {
 
 async function read(table_id) {
     return knex("tables")
-    .select("*")
-    .where({ table_id: table_id })
-    .then((result) => result[0]);
+        .select("*")
+        .where({ table_id: table_id })
+        .then((result) => result[0]);
 }
 
 async function update(table) {
-        return knex("tables")
-            .select("*")
-            .where({ table_id: table.table_id })
-            .update(table, "*")
-            .then((result) => result[0]);
-    
+    return knex("tables")
+        .select("*")
+        .where({ table_id: table.table_id })
+        .update(table, "*")
+        .then((result) => result[0]);  
 }
 
 async function finish(table, res_id) {

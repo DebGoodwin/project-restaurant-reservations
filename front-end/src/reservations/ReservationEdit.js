@@ -16,7 +16,6 @@ function ReservationEdit() {
 
     const getReservationData = async(reservation_id) => {
         const reservation = await readReservation(reservation_id);
-        
         reservation.reservation_date = formatAsDate(reservation.reservation_date);
 
         setReservation(reservation);
@@ -31,7 +30,6 @@ function ReservationEdit() {
 
         const errors = ValidateReservation(reservation);
         if(errors.length) {
-            console.log(errors)
             setReservationErrors(errors);
         } else {
             updateReservation(reservation)

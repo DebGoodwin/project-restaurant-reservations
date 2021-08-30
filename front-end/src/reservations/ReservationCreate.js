@@ -9,7 +9,7 @@ import ReservationForm from "./ReservationForm";
 function ReservationCreate() {
     const history = useHistory();
     const [reservationErrors, setReservationErrors] = useState([]);
-    
+
     const [reservation, setReservation] = useState({
         first_name: "",
         last_name: "",
@@ -25,7 +25,6 @@ function ReservationCreate() {
 
         const errors = ValidateReservation(reservation);
         if(errors.length) {
-            console.log(errors)
             setReservationErrors(errors);
         } else {
             createReservation(reservation)
@@ -51,22 +50,18 @@ function ReservationCreate() {
             }));
         }
     }
-    
   
-
-  return (
-    <div>
-        <ErrorAlert errors={reservationErrors} />
-        <ReservationForm
-            title="Create"
-            reservation={reservation}
-            changeHandler={changeHandler}
-            submitHandler={submitHandler}
-        />
-       
-    </div>
-  );
-
+    return (
+        <div>
+            <ErrorAlert errors={reservationErrors} />
+            <ReservationForm
+                title="Create"
+                reservation={reservation}
+                changeHandler={changeHandler}
+                submitHandler={submitHandler}
+            />  
+        </div>
+    );
 }
 
 export default ReservationCreate;

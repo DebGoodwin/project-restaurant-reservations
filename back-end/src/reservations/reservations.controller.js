@@ -20,7 +20,6 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "reservation_id",
-  
 ]
 
 /**
@@ -86,16 +85,14 @@ function notTuesday(req, res, next) {
   });
 }
 
-// Verify the reservation date/time is not in the past
+// Verify the reservation date/time is valid and not in the past.
 function notPastDate(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
 
   const currDate = Date.now();
   const reservationDate = new Date(`${reservation_date} ${reservation_time}`);
   const newResDate = reservationDate.valueOf();
-  console.log("Reservation Date***",reservationDate)
   
-
   if(isNaN(Date.parse(reservation_date))) {
     return next ({
       status: 400,
@@ -130,12 +127,12 @@ function duringOperationHours(req, res, next) {
   })
 }
 
-// Verify the reservation exists
+// Verify the reservation exists.
 async function reservationExists(req, res, next) {
   const { reservation_id } = req.params;
   const rid = Number.parseInt(reservation_id);
-  if(rid) {
 
+  if(rid) {
     const reservation = await service.read(rid);
 
     if(reservation) {
@@ -168,7 +165,6 @@ function statusIsValid(req, res, next) {
     res.locals.status = "booked";
     return next();
   }
-
 }
 
 // Verify the status has not already been finished.
@@ -197,6 +193,7 @@ function statusIsBooked(req, res, next) {
   return next();
 }
 
+
 /**
  * CRUDL functions
  * 
@@ -216,7 +213,6 @@ async function list(req, res) {
     const data = await service.list();
     res.json({ data });
   }
- 
 }
 
 async function create(req, res) {
@@ -244,9 +240,8 @@ async function updateStatus(req, res) {
 }
 
 async function update(req, res) {
-  console.log("Entering Update+++")
   const reservation = req.body.data;
- console.log("Reservation:", reservation)
+
   const updatedReservation = {
     ...reservation,
     reservation_id: reservation.reservation_id,
@@ -259,7 +254,7 @@ async function update(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create:  [
+  create: [
       hasProperties(...REQUIRED_PROPERTIES), 
       hasValidProperties(...VALID_PROPERTIES), 
       dateIsValid, 
@@ -271,7 +266,7 @@ module.exports = {
       statusIsBooked,
       asyncErrorBoundary(create)
   ],
-  read:    [
+  read: [
       reservationExists,
       asyncErrorBoundary(read)
   ],
@@ -281,7 +276,7 @@ module.exports = {
       statusIsNotFinished,
       asyncErrorBoundary(updateStatus),
   ],
-  update:  [
+  update: [
       hasProperties(...REQUIRED_PROPERTIES), 
       hasValidProperties(...VALID_PROPERTIES), 
       dateIsValid, 

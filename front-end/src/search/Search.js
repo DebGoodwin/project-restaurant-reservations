@@ -32,19 +32,11 @@ function Search() {
             } catch(error) {
                 setSearchErrors([...searchErrors, error.message]);
             }
-
         }
-
         searchByMobile();
-        // searchReservationByMobile(mobileNumber, abortController.signal)
-        // .then(setReservations)
-        // .then(setSubmitted('true'))
-        // .then(console.log(reservations))
-        // .catch(setSearchErrors);
 
         return () => abortController.abort();
     }
-
 
     return(
         <div className="card my-3 border-secondary">
@@ -69,11 +61,9 @@ function Search() {
                         </div>
                     </div>
                 </form>
-            </div>  {submitted ? <ReservationList reservations={reservations} /> : ""}
-                
+            </div>  {submitted ? <ReservationList reservations={reservations} /> : ""}   
         </div>
-    )
-    
+    )  
 }
 
 export default Search;
