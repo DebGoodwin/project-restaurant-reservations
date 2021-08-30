@@ -31,10 +31,10 @@ function ReservationDetails(props) {
           <td className="align-middle">{reservation_time}</td>
           <td className="align-middle">{people}</td>
           <td className="align-middle" data-reservation-id-status={reservation_id}>{status}</td>
-          <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-sm btn-secondary  m-1">Seat</button></Link>):""}</td>
-          <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/edit`}><button href={`/reservations/${reservation_id}/edit`} type="button" className="btn btn-secondary btn-sm m-1">Edit</button></Link>):""}</td>
-          <td> {status === "booked" ? (<button data-reservation-id-cancel={reservation_id} className="btn btn-secondary btn-sm m-1" onClick={() => cancelHandler(reservation_id)}>Cancel</button>):""}</td>       
-      </tr>  
+          <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/seat`}><button href={`/reservations/${reservation_id}/seat`} type="button" className="btn btn-sm table-condensed btn-secondary m-1">Seat</button></Link>):""}</td>
+          <td>{status === "booked" ? (<Link to={`/reservations/${reservation_id}/edit`}><button href={`/reservations/${reservation_id}/edit`} type="button" className="btn btn-sm table-condensed btn-secondary m-1">Edit</button></Link>):""}</td>
+          <td> {status === "booked" ? (<button data-reservation-id-cancel={reservation_id} className="btn btn-sm table-condensed btn-secondary m-1" onClick={() => cancelHandler(reservation_id)}>Cancel</button>):""}</td>       
+      </tr>   
     </>
   );
 }

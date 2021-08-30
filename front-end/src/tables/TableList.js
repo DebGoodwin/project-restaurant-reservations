@@ -9,7 +9,7 @@ function TableList (props) {
           <td className="align-middle">{table.capacity}</td>
           <td className="align-middle" data-table-id-status={table.table_id} >
             {table.occupied ? "occupied" : "free"}</td>
-          <td>  {table.occupied ? (<button data-table-id-finish={table.table_id} className="btn btn-secondary btn-sm m-2" onClick={() => finishHandler(table.table_id)}>Finish</button>):""}</td>
+          <td>  {table.occupied ? (<button data-table-id-finish={table.table_id} className="btn btn-sm table-condensed btn-secondary m-2" onClick={() => finishHandler(table.table_id)}>Finish</button>):""}</td>
         </tr>
       ));
 
