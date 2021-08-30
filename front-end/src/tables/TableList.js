@@ -15,8 +15,8 @@ function TableList (props) {
 
       
     return (
-        <div>
-            <div className="headingBar d-md-flex my-3 p-2">
+        <div className="headingBar d-md-flex my-3 p-2">
+            <div className="table-responsive">
                 <table className = "table table-condensed table-striped">
                 <thead>
                     <tr>

@@ -23,7 +23,7 @@ function ReservationList({ reservations }) {
   if(reservations[0] !== "No reservations found") {
     return (
       <div className="headingBar d-md-flex my-3 p-2">
-         <div className="table-responsive-md">
+        <div className="table-responsive">
           <table className= "table table-condensed table-striped">
           <thead>
             <tr>
@@ -43,8 +43,8 @@ function ReservationList({ reservations }) {
             {reservationRows}
           </tbody>
           </table>
-          </div>
         </div>
+      </div>
     )
   } else {
       return (
