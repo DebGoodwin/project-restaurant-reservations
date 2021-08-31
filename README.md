@@ -11,9 +11,9 @@ This application is a reservation system created for the fine dining restaurant,
 
 ---
 ## API:
+
 | Path | Request | Description |
 | ---------------- | ----- | ---------------------------------------------------------------- |
-|
 | `/reservations` | POST | create a new reservation |
 | `/reservations` | GET | list all reservations, sorted by time |
 | `/reservations/:reservation_id` | GET | read a reservation by reservation_id |
@@ -21,7 +21,6 @@ This application is a reservation system created for the fine dining restaurant,
 | `/reservations?date=YYYY-MM-DD` | GET | list all reservations for the date specified |
 | `/reservations?mobile_number=XXX-XXX-XXXX` | GET | list all reservations for the mobile_number specified, will accept a partial mobile_number |
 | `/reservations/:reservationId/status` | PUT | update the status of an existing reservation by reservation_id  |
-| 
 | `/tables` | GET | list all tables |
 | `/tables` | POST | create a new table |
 | `/tables/:table_id/seat` | PUT | seat a reservation at a table |
@@ -31,11 +30,11 @@ This application is a reservation system created for the fine dining restaurant,
 ## Screenshots:
 
 ### Dashboard
-> - The **Dashboard** displays the a list of the reservations for a particular date. Each booked reservation contains buttons to `Seat`, `Edit`, or `Cancel` the reservation.
-
-> - The navigation buttons: `Previous`, `Today`, and `Next` allow the user to change the date displayed on the dashboard.
-
-> - A List of tables is also displayed to show which tables are currently available. A `Finish` button is displayed when a table is currently 'occupied'. Selecting the `Finish` button will set the table status to 'free', and update the Dashboard.
+ > The **Dashboard** displays the a list of the reservations for a particular date. Each booked reservation contains buttons to `Seat`, `Edit`, or `Cancel` the reservation.
+>
+ > The navigation buttons: `Previous`, `Today`, and `Next` allow the user to change the date displayed on the dashboard.
+>
+ > A List of tables is also displayed to show which tables are currently available. A `Finish` button is displayed when a table is currently 'occupied'. Selecting the `Finish` button will set the table status to 'free', and update the Dashboard.
 
 ![Dashboard](./screenshots/dashboard.PNG)
 
