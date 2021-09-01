@@ -2,15 +2,29 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 
 function ReservationForm(props) {
-    const { title, reservation, changeHandler, submitHandler } = props;
+    const { title, reservation, setReservation, submitHandler } = props;
     const history = useHistory();
+
+
+    const changeHandler = ({ target: { name, value } }) => { 
+        if(name === "people") {
+            setReservation((previousReservation)=> ({
+                ...previousReservation,
+                [name]: Number(value),
+            }));
+        } else {
+            setReservation((previousReservation) => ({
+              ...previousReservation,
+                [name]: value,
+            }));
+        }
+    }
 
     return (
         <div className="card my-3 border-secondary">
             <h3 className="card-header text-white bg-secondary">{title} Reservation</h3>
             <div className="card-body"></div>
                 <form onSubmit={submitHandler}>
-            
                 <div className="col-10 form-group">
                     <label className="form-label" htmlFor="first_name">First name: </label>
                     <input  
@@ -18,7 +32,7 @@ function ReservationForm(props) {
                         id="first_name"
                         name="first_name"
                         type="text"
-                        value={reservation.first_name}
+                        value={reservation.first_name ||''}
                         onChange={changeHandler}
                         required={true}
                     />
@@ -28,7 +42,7 @@ function ReservationForm(props) {
                         id="last_name"
                         name="last_name"
                         type="text"
-                        value={reservation.last_name}
+                        value={reservation.last_name ||''}
                         onChange={changeHandler}
                         required={true}
                     /><br/>
@@ -38,7 +52,7 @@ function ReservationForm(props) {
                         id="mobile_number"
                         name="mobile_number"
                         type="text"
-                        value={reservation.mobile_number}
+                        value={reservation.mobile_number ||''}
                         onChange={changeHandler}
                         required={true}
                         placeholder="(xxx) xxx-xxxx"
@@ -51,7 +65,7 @@ function ReservationForm(props) {
                         type="date"
                         placeholder="YYYY-MM-DD"
                         pattern="\d{4}-\d{2}-\d{2}"
-                        value={reservation.reservation_date}
+                        value={reservation.reservation_date ||''}
                         onChange={changeHandler}
                         required={true}
                     />
@@ -63,7 +77,7 @@ function ReservationForm(props) {
                         type="time"
                         placeholder="HH:MM"
                         pattern="[0-9]{2}:[0-9]:{2}"
-                        value={reservation.reservation_time}
+                        value={reservation.reservation_time ||''}
                         onChange={changeHandler}
                         required={true}
                     /><br/>
@@ -74,7 +88,7 @@ function ReservationForm(props) {
                         name="people"
                         type="number"
                         min={1}
-                        value={reservation.people}
+                        value={reservation.people ||''}
                         onChange={changeHandler}
                         required={true}
                     /><br/>

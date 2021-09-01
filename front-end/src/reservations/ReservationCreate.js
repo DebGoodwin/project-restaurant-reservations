@@ -34,22 +34,6 @@ function ReservationCreate() {
                 .catch(setReservationErrors);
         }
     }
-    
- 
-    const changeHandler = ({ target: { name, value } }) => { 
-      
-        if(name === "people") {
-            setReservation((previousReservation)=> ({
-                ...previousReservation,
-                [name]: Number(value),
-            }));
-        } else {
-            setReservation((previousReservation) => ({
-              ...previousReservation,
-                [name]: value,
-            }));
-        }
-    }
   
     return (
         <div>
@@ -57,7 +41,7 @@ function ReservationCreate() {
             <ReservationForm
                 title="Create"
                 reservation={reservation}
-                changeHandler={changeHandler}
+                setReservation={setReservation}
                 submitHandler={submitHandler}
             />  
         </div>

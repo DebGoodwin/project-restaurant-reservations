@@ -39,23 +39,6 @@ function ReservationEdit() {
                 .catch(setReservationErrors);
         }
     }
-    
- 
-    const changeHandler = ({ target: { name, value } }) => { 
-      
-        if(name === "people") {
-            setReservation((previousReservation)=> ({
-                ...previousReservation,
-                [name]: Number(value),
-            }));
-        } else {
-            setReservation((previousReservation) => ({
-              ...previousReservation,
-                [name]: value,
-            }));
-        }
-    }
-    
 
     return (
         <>
@@ -63,11 +46,11 @@ function ReservationEdit() {
             <ReservationForm
                 title="Edit"
                 reservation={reservation}
-                changeHandler={changeHandler}
+                setReservation={setReservation}
                 submitHandler={submitHandler}
             />
         </>
-    )
+    );
 }
 
 export default ReservationEdit;
