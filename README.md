@@ -72,7 +72,7 @@ This application is a reservation system created for the fine dining restaurant,
  *A full-stack app built with:* 
 
 - **Client:** React.js, JavaScript, HTML, Bootstrap, RESTful API
-Server: Node, Express, Knex
+- **Server:** Node, Express, Knex
 
 - **Database:** Postgres SQL
 
